@@ -8,6 +8,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
@@ -30,13 +33,6 @@ public class LoginController {
         return new R(200, "登陆成功！", res);
     }
 
-    @PutMapping("/register/username/{username}/password/{password}/role_id/{role_id}")
-    public R register(User user) {
-        User u = userService.getUserByUsername(user.getUsername());
-        if (u != null) return new R(409, "用户名已存在！", null);
-        loginService.register(user);
-        return new R(200, "注册成功！", null);
-    }
 
 
     @ApiOperation("管理员注销")

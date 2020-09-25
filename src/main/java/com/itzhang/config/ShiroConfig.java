@@ -34,7 +34,6 @@ public class ShiroConfig {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(realm);
         // 自定义Session管理，使用redis
-//        securityManager.setSessionManager(getDefaultWebSessionManager());
         securityManager.setSessionManager(getMyShiroSessionManager());
         // 自定义缓存实现，使用redis
         securityManager.setCacheManager(getRedisCacheManager());

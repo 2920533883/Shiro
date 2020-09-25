@@ -12,6 +12,7 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Set;
@@ -34,5 +35,15 @@ public class UserController {
             user.setAuth(auth);
         }
         return new R(200, "获取成功", users);
+    }
+
+    @PutMapping("/insertUser/username/{username}/password/{password}/role_id/{role_id}")
+    @RequiresPermissions("user:insert")
+    public R insertUser(User user) {
+        Subject subject = SecurityUtils.getSubject();
+        User u = userService.getUserByUsername(user.getUsername());
+        if (u != null) return new R(409, "用户名已存在！", null);
+        userService.insertUser(user);
+        return new R(200, "注册成功！", null);
     }
 }
