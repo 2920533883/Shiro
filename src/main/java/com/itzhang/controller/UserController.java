@@ -4,6 +4,8 @@ import com.itzhang.pojo.R;
 import com.itzhang.pojo.User;
 import com.itzhang.service.UserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.AuthorizationException;
@@ -37,10 +39,15 @@ public class UserController {
         return new R(200, "获取成功", users);
     }
 
+    @ApiOperation(value = "添加管理员", notes = "需要权限 user:insert")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "username", value = "用户名"),
+            @ApiImplicitParam(name = "password", value = "密码"),
+            @ApiImplicitParam(name = "role_id", value = "角色Id")
+    })
     @PutMapping("/insertUser/username/{username}/password/{password}/role_id/{role_id}")
     @RequiresPermissions("user:insert")
     public R insertUser(User user) {
-        Subject subject = SecurityUtils.getSubject();
         User u = userService.getUserByUsername(user.getUsername());
         if (u != null) return new R(409, "用户名已存在！", null);
         userService.insertUser(user);

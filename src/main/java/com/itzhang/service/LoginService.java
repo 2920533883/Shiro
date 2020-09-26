@@ -6,5 +6,5 @@ import java.util.Map;
 
 public interface LoginService {
     Map<String, Object> login(String username, String password);
-    boolean logout(String username);
+    void logout(String username);
 }

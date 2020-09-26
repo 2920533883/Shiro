@@ -29,11 +29,14 @@ public class LoginRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         String username = (String) principals.getPrimaryPrincipal();
+        // 获取用户角色、权限信息
         User user = userMapper.getUserByUsername(username);
         String role = roleMapper.getRoleByRoleId(user.getRole_id());
         Set<String> auth = roleMapper.getAuthByRoleId(user.getRole_id());
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        // 设置权限
         authorizationInfo.setStringPermissions(auth);
+        // 设置角色
         authorizationInfo.setRoles(Collections.singleton(role));
         return authorizationInfo;
     }

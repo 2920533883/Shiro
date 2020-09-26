@@ -13,6 +13,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Map;
 
 @Api(tags = "登录注销模块")
@@ -22,6 +23,7 @@ public class LoginController {
     LoginService loginService;
     @Autowired
     UserService userService;
+
     @ApiOperation("管理员登录")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", value = "用户名", paramType = "String"),
@@ -34,11 +36,11 @@ public class LoginController {
     }
 
 
-
     @ApiOperation("管理员注销")
     @PostMapping("/logout/username/{username}")
     public R logout(@PathVariable String username) {
-        if (loginService.logout(username)) return new R(200, "注销成功！", null);
-        else return new R(400, "请先登录！", null);
+        loginService.logout(username);
+        return new R(200, "注销成功！", null);
+
     }
 }

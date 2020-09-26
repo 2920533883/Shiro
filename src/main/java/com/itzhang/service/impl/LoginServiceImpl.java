@@ -20,7 +20,8 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public Map<String, Object> login(String username, String password) {
-        redisSessionDAO.setKeyPrefix(username + ":");
+        // 设置redis存储前缀
+        redisSessionDAO.setKeyPrefix("shiro:" + username + ":");
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         subject.login(token);
@@ -32,10 +33,9 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public boolean logout(String username) {
+    public void logout(String username) {
         Subject subject = SecurityUtils.getSubject();
         System.out.println(subject.getSession().getId());
         subject.logout();
-        return true;
     }
 }
