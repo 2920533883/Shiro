@@ -1,19 +1,16 @@
 package com.itzhang.controller;
 
 import com.itzhang.pojo.R;
-import com.itzhang.pojo.User;
 import com.itzhang.service.LoginService;
 import com.itzhang.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import javax.security.auth.login.CredentialException;
 import java.util.Map;
 
 @Api(tags = "登录注销模块")
@@ -37,10 +34,13 @@ public class LoginController {
 
 
     @ApiOperation("管理员注销")
-    @PostMapping("/logout/username/{username}")
-    public R logout(@PathVariable String username) {
-        loginService.logout(username);
+    @PostMapping("/logout")
+    @RequiresPermissions("user:get")
+    public R logout() throws CredentialException {
+        loginService.logout();
         return new R(200, "注销成功！", null);
-
     }
+
+
+
 }

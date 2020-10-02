@@ -3,11 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itzhang.mapper.RoleMapper">
-
-    <select id="getRoleByRoleId" resultType="java.lang.String">
-        select role_name from role where id = #{id}
-    </select>
-    <select id="getAuthByRoleId" resultType="java.lang.String">
-        select auth_name from role_auth where role_id = #{id}
+    <insert id="addRole" useGeneratedKeys="true" keyProperty="id">
+        insert into role value (#{id}, #{role_name})
+    </insert>
+    <delete id="deleteRoleByRoleId">
+        delete from role where id = #{role_id}
+    </delete>
+    <select id="getRoleByRoleId" resultType="com.itzhang.pojo.Role">
+        select id, role_name from role where id = #{role_id}
     </select>
 </mapper>

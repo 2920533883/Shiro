@@ -1,6 +1,5 @@
 package com.itzhang.service.impl;
 
-import com.itzhang.mapper.RoleMapper;
 import com.itzhang.mapper.UserMapper;
 import com.itzhang.pojo.User;
 import com.itzhang.service.UserService;
@@ -8,25 +7,42 @@ import com.itzhang.utils.SaltUtil;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Set;
+
 
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
-    @Autowired
-    private RoleMapper roleMapper;
 
     @Override
-    public List<User> getAllUser() {
-        return userMapper.getAllUser();
+    public List<User> getUsers(Integer pageNum, Integer pageSize) {
+        int start = (pageNum-1)*pageSize;
+        int offset = pageSize;
+        return userMapper.getUsers(start, offset);
     }
 
     @Override
     public User getUserByUsername(String username) {
         return userMapper.getUserByUsername(username);
+    }
+
+    @Override
+    public void deleteUserById(String id) {
+        userMapper.deleteUserById(id);
+    }
+
+    @Override
+    public void updatePasswordById(String id, String password) {
+        String salt = SaltUtil.getSalt();
+        Md5Hash md5Hash = new Md5Hash(password, salt, 88);
+        password = md5Hash.toHex();
+        userMapper.updatePasswordById(id, password, salt);
+    }
+
+    @Override
+    public void updateRoleById(String id, String role_id) {
+        userMapper.updateRoleById(id, role_id);
     }
 
     @Override
@@ -37,15 +53,5 @@ public class UserServiceImpl implements UserService {
         user.setPassword(md5Hash.toHex());
         user.setSalt(salt);
         userMapper.insertUser(user);
-    }
-
-    @Override
-    public String getRoleByRoleId(String id) {
-        return roleMapper.getRoleByRoleId(id);
-    }
-
-    @Override
-    public Set<String> getAuthByRoleId(String id) {
-        return roleMapper.getAuthByRoleId(id);
     }
 }

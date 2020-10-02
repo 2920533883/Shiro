@@ -1,8 +1,10 @@
 package com.itzhang.realm;
 
-import com.itzhang.mapper.RoleMapper;
-import com.itzhang.mapper.UserMapper;
+import com.itzhang.pojo.Auth;
+import com.itzhang.pojo.Role;
 import com.itzhang.pojo.User;
+import com.itzhang.service.RoleAuthService;
+import com.itzhang.service.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -15,36 +17,39 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class LoginRealm extends AuthorizingRealm {
 
 
     @Autowired
-    UserMapper userMapper;
-
+    UserService userService;
     @Autowired
-    RoleMapper roleMapper;
+    RoleAuthService roleAuthService;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         String username = (String) principals.getPrimaryPrincipal();
         // 获取用户角色、权限信息
-        User user = userMapper.getUserByUsername(username);
-        String role = roleMapper.getRoleByRoleId(user.getRole_id());
-        Set<String> auth = roleMapper.getAuthByRoleId(user.getRole_id());
+        User user = userService.getUserByUsername(username);
+        Role role = roleAuthService.getRole(user.getRole_id());
+        List<Auth> auth = roleAuthService.getAuth(user.getRole_id());
+        Set<String> authName = new HashSet<>();
+        auth.forEach(auth1 -> authName.add(auth1.getAuth_name()));
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         // 设置权限
-        authorizationInfo.setStringPermissions(auth);
+        authorizationInfo.setStringPermissions(authName);
         // 设置角色
-        authorizationInfo.setRoles(Collections.singleton(role));
+        authorizationInfo.setRoles(Collections.singleton(role.getRole_name()));
         return authorizationInfo;
     }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String username = (String) token.getPrincipal();
-        User user = userMapper.getUserByUsername(username);
+        User user = userService.getUserByUsername(username);
         if (!ObjectUtils.isEmpty(user)) {
             String password = user.getPassword();
             String salt = user.getSalt();

@@ -25,7 +25,7 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build();
     }
-    
+
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("河北农业大学-算法课例题") //接口管理文档首页显示

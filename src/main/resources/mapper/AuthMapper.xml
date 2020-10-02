@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itzhang.mapper.AuthMapper">
+    <insert id="addAuth" useGeneratedKeys="true" keyProperty="id">
+        insert into auth value (#{id}, #{auth_name})
+    </insert>
+    <delete id="deleteAuthByAuthId">
+        delete from auth where id = #{auth_id}
+    </delete>
+    <select id="getAllAuth" resultType="com.itzhang.pojo.Auth">
+        select id, auth_name from auth
+    </select>
+    <select id="getAuthByAuthId" resultType="com.itzhang.pojo.Auth">
+        select id, auth_name from auth where id = #{auth_id}
+    </select>
+
+</mapper>

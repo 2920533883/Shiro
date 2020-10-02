@@ -8,11 +8,13 @@ import java.util.Set;
 public interface UserService {
     void insertUser(User user);
 
-    List<User> getAllUser();
+    List<User> getUsers(Integer pageNum, Integer pageSize);
 
     User getUserByUsername(String username);
 
-    String getRoleByRoleId(String id);
+    void deleteUserById(String id);
 
-    Set<String> getAuthByRoleId(String id);
+    void updatePasswordById(String id, String password);
+
+    void updateRoleById(String id, String role_id);
 }
