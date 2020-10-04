@@ -12,12 +12,15 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
 @Api(tags = "管理员模块")
-@RestController
+@RestController("/user")
+@Transactional(isolation = Isolation.READ_COMMITTED)
 public class UserController {
     @Autowired
     UserService userService;
@@ -43,14 +46,14 @@ public class UserController {
             map.put("auth", auth);
             res.add(map);
         }
-        return new R(200, "获取成功", res);
+        return new R(200, "获取成功！", res);
     }
 
     @ApiOperation(value = "添加管理员", notes = "需要权限 user:insert")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", value = "用户名"),
             @ApiImplicitParam(name = "password", value = "密码"),
-            @ApiImplicitParam(name = "role_id", value = "角色Id")
+            @ApiImplicitParam(name = "role_id", value = "角色ID")
     })
     @PutMapping("/insertUser/username/{username}/password/{password}/role_id/{role_id}")
     @RequiresPermissions("user:insert")
