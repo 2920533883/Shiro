@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Api(tags = "留言模块")
-@RestController
+@RestController("/msg")
 public class LeaveMsgController {
     @Autowired
     LeaveMsgService leaveMsgService;
@@ -25,7 +25,7 @@ public class LeaveMsgController {
             @ApiImplicitParam(name = "pageSize", value = "每页信息数", paramType = "int")
     })
     @RequiresPermissions("msg:get")
-    @GetMapping("/msg/getMsgs/pageNum/{pageNum}/pageSize/{pageSize}")
+    @GetMapping("/getMsgs/pageNum/{pageNum}/pageSize/{pageSize}")
     public R getMsgs(@PathVariable Integer pageNum, @PathVariable Integer pageSize){
         List<LeaveMsg> msgs = leaveMsgService.getMsgs(pageNum, pageSize);
         return new R(200, "获取成功！", msgs);
@@ -34,7 +34,7 @@ public class LeaveMsgController {
     @ApiOperation(value = "添加留言", notes = "需要权限 msg:insert")
     @ApiImplicitParam(name = "content", value = "内容", paramType = "string")
     @RequiresPermissions("msg:insert")
-    @PutMapping("/msg/addMsg/content/{content}")
+    @PutMapping("/addMsg/content/{content}")
     public R addMsg(@PathVariable String content){
         leaveMsgService.insertMsg(content);
         return new R(200, "添加成功！", null);
@@ -43,7 +43,7 @@ public class LeaveMsgController {
     @ApiOperation(value = "删除留言", notes = "需要权限 msg:delete")
     @ApiImplicitParam(name = "msg_id", value = "留言ID", paramType = "string")
     @RequiresPermissions("msg:delete")
-    @DeleteMapping("/msg/deleteMsg/msg_id/{msg_id}")
+    @DeleteMapping("/deleteMsg/msg_id/{msg_id}")
     public R deleteMsg(@PathVariable String msg_id){
         leaveMsgService.deleteMsg(msg_id);
         return new R(200, "删除成功！", null);
