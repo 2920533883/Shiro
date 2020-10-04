@@ -9,12 +9,14 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import javax.security.auth.login.CredentialException;
 import java.util.Map;
 
 @Api(tags = "登录注销模块")
 @RestController
+@Transactional(isolation = Isolation.READ_COMMITTED)
 public class LoginController {
     @Autowired
     LoginService loginService;
@@ -36,7 +38,7 @@ public class LoginController {
     @ApiOperation("管理员注销")
     @PostMapping("/logout")
     @RequiresPermissions("user:get")
-    public R logout() throws CredentialException {
+    public R logout(){
         loginService.logout();
         return new R(200, "注销成功！", null);
     }
