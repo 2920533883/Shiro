@@ -1,7 +1,6 @@
 package com.itzhang.controller;
 
 import com.itzhang.pojo.R;
-import com.itzhang.pojo.User;
 import com.itzhang.service.LoginService;
 import com.itzhang.service.UserService;
 import io.swagger.annotations.Api;
@@ -28,11 +27,10 @@ public class LoginController {
             @ApiImplicitParam(name = "password", value = "密码", paramType = "String")
     })
     @PostMapping("/login")
-    public R login(@RequestParam("username")String username, @RequestParam("password") String password) {
+    public R login(@RequestParam("username") String username, @RequestParam("password") String password) {
         Map<String, Object> res = loginService.login(username, password);
         return new R(200, "登陆成功！", res);
     }
-
 
     @ApiOperation("管理员注销")
     @PostMapping("/logout")
@@ -41,6 +39,4 @@ public class LoginController {
         loginService.logout();
         return new R(200, "注销成功！", null);
     }
-
-
 }
