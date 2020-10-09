@@ -7,11 +7,14 @@ import org.apache.shiro.subject.Subject;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Transactional(isolation = Isolation.READ_COMMITTED)
 public class LoginServiceImpl implements LoginService {
     @Autowired
     RedisSessionDAO redisSessionDAO;

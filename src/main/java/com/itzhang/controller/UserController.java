@@ -20,7 +20,6 @@ import java.util.*;
 
 @Api(tags = "管理员模块")
 @RestController("/user")
-@Transactional(isolation = Isolation.READ_COMMITTED)
 public class UserController {
     @Autowired
     UserService userService;
@@ -32,9 +31,9 @@ public class UserController {
             @ApiImplicitParam(name = "pageNum", value = "当前页", dataType = "int"),
             @ApiImplicitParam(name = "pageSize", value = "每页个数", dataType = "int")
     })
-    @GetMapping("/getUsers/pageNum/{pageNum}/pageSize/{pageSize}")
+    @GetMapping("/getUsers")
     @RequiresPermissions("user:get")
-    public R getUsers(@PathVariable Integer pageNum, @PathVariable Integer pageSize) {
+    public R getUsers(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
         List<User> users = userService.getUsers(pageNum, pageSize);
         List<Map<String, Object>> res = new ArrayList<>();
         for (User user : users) {
@@ -55,11 +54,12 @@ public class UserController {
             @ApiImplicitParam(name = "password", value = "密码"),
             @ApiImplicitParam(name = "role_id", value = "角色ID")
     })
-    @PutMapping("/insertUser/username/{username}/password/{password}/role_id/{role_id}")
+    @PutMapping("/insertUser")
     @RequiresPermissions("user:insert")
-    public R insertUser(User user) {
-        User u = userService.getUserByUsername(user.getUsername());
+    public R insertUser(@RequestParam String username, @RequestParam String password, @RequestParam String role_id) {
+        User u = userService.getUserByUsername(username);
         if (u != null) return new R(409, "用户名已存在！", null);
+        User user = new User(null, username, password, null, role_id);
         userService.insertUser(user);
         return new R(200, "注册成功！", null);
     }
@@ -69,9 +69,9 @@ public class UserController {
             @ApiImplicitParam(name = "id", value = "用户ID"),
             @ApiImplicitParam(name = "password", value = "新密码")
     })
-    @PutMapping("/updatePassword/id/{id}/password/{password}")
+    @PutMapping("/updatePassword/{id}")
     @RequiresPermissions("user:update")
-    public R updatePassword(@PathVariable String id, @PathVariable String password) {
+    public R updatePassword(@PathVariable String id, @RequestParam String password) {
         userService.updatePasswordById(id, password);
         return new R(200, "修改成功！", null);
     }
@@ -81,16 +81,16 @@ public class UserController {
             @ApiImplicitParam(name = "id", value = "用户ID"),
             @ApiImplicitParam(name = "role_id", value = "角色ID")
     })
-    @PutMapping("/updateRole/id/{id}/role_id/{role_id}")
+    @PutMapping("/updateRole/{id}")
     @RequiresPermissions("user:update")
-    public R updateRole(@PathVariable String id, @PathVariable String role_id) {
+    public R updateRole(@PathVariable String id, @RequestParam String role_id) {
         userService.updateRoleById(id, role_id);
         return new R(200, "修改成功！", null);
     }
 
     @ApiOperation(value = "删除管理员", notes = "需要权限 user:delete")
     @ApiImplicitParam(name = "id", value = "用户ID")
-    @DeleteMapping("/deleteUser/id/{id}")
+    @DeleteMapping("/deleteUser/{id}")
     @RequiresPermissions("user:delete")
     public R deleteUser(@PathVariable String id) {
         userService.deleteUserById(id);

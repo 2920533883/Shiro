@@ -9,11 +9,14 @@ import com.itzhang.pojo.RoleAuth;
 import com.itzhang.service.RoleAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service("roleAuthService")
+@Transactional(isolation = Isolation.READ_UNCOMMITTED)
 public class RoleAuthServiceImpl implements RoleAuthService {
     @Autowired
     private RoleAuthMapper roleAuthMapper;
