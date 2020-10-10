@@ -22,5 +22,8 @@
     <select id="getUserByUsername" resultType="com.itzhang.pojo.User" parameterType="String">
         select id, username,password, salt, role_id from user where username=#{username}
     </select>
+    <select id="getUserById" resultType="com.itzhang.pojo.User">
+        select id, username, password, salt, role_id from user where id = #{id}
+    </select>
 
 </mapper>

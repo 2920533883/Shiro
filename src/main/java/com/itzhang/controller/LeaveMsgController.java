@@ -24,7 +24,7 @@ public class LeaveMsgController {
             @ApiImplicitParam(name = "pageNum", value = "当前页数", paramType = "int"),
             @ApiImplicitParam(name = "pageSize", value = "每页信息数", paramType = "int")
     })
-    @GetMapping("/getMsgs")
+    @GetMapping("/msgs")
     public R getMsgs(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
         List<LeaveMsg> msgs = leaveMsgService.getMsgs(pageNum, pageSize);
         return new R(200, "获取成功！", msgs);
@@ -32,16 +32,16 @@ public class LeaveMsgController {
 
     @ApiOperation(value = "添加留言")
     @ApiImplicitParam(name = "content", value = "内容", paramType = "string")
-    @PutMapping("/addMsg")
+    @PostMapping("/msg")
     public R addMsg(@RequestParam String content) {
         leaveMsgService.insertMsg(content);
-        return new R(200, "添加成功！", null);
+        return new R(200, "添加成功！", content);
     }
 
     @ApiOperation(value = "删除留言", notes = "需要权限 msg:delete")
     @ApiImplicitParam(name = "msg_id", value = "留言ID", paramType = "string")
     @RequiresPermissions("msg:delete")
-    @DeleteMapping("/deleteMsg/{msg_id}")
+    @DeleteMapping("/msg/{msg_id}")
     public R deleteMsg(@PathVariable String msg_id) {
         leaveMsgService.deleteMsg(msg_id);
         return new R(200, "删除成功！", null);
