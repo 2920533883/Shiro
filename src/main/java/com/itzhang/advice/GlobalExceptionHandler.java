@@ -39,11 +39,11 @@ public class GlobalExceptionHandler {
         return new R(403, "没有对应权限！", null);
     }
 
-//    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-//    public R myHttpRequestMethodNotSupportedException(Exception e){
-//        System.out.println("请求方法不正确！");
-//        return new R(405, "请求方法不正确" ,null);
-//    }
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public R myHttpRequestMethodNotSupportedException(Exception e){
+        System.out.println("请求方法不正确！");
+        return new R(405, "请求方法不正确" ,null);
+    }
 
     @ExceptionHandler(Exception.class)
     public R mySQLException(Exception e) {
