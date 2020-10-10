@@ -1,11 +1,11 @@
 package com.itzhang.service.impl;
 
+import com.itzhang.entity.Auth;
+import com.itzhang.entity.Role;
+import com.itzhang.entity.RoleAuth;
 import com.itzhang.mapper.AuthMapper;
 import com.itzhang.mapper.RoleAuthMapper;
 import com.itzhang.mapper.RoleMapper;
-import com.itzhang.pojo.Auth;
-import com.itzhang.pojo.Role;
-import com.itzhang.pojo.RoleAuth;
 import com.itzhang.service.RoleAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,15 +24,26 @@ public class RoleAuthServiceImpl implements RoleAuthService {
     private RoleMapper roleMapper;
     @Autowired
     private AuthMapper authMapper;
+
     @Override
     public List<Auth> getAuth(String role_id) {
         List<String> authIds = roleAuthMapper.getAuthIdByRoleId(role_id);
         List<Auth> authList = new ArrayList<>();
-        for (String authId: authIds){
+        for (String authId : authIds) {
             Auth auth = authMapper.getAuthByAuthId(authId);
             authList.add(auth);
         }
         return authList;
+    }
+
+    @Override
+    public List<Auth> getAllAuth() {
+        return authMapper.getAllAuth();
+    }
+
+    @Override
+    public List<Role> getAllRole() {
+        return roleMapper.getAllRole();
     }
 
     @Override
@@ -41,18 +52,18 @@ public class RoleAuthServiceImpl implements RoleAuthService {
     }
 
     @Override
-    public void addRoleAuth(String role_id, String auth_id) {
-        roleAuthMapper.addRoleAuth(new RoleAuth(null, role_id, auth_id));
+    public void addRoleAuth(RoleAuth roleAuth) {
+        roleAuthMapper.addRoleAuth(roleAuth);
     }
 
     @Override
-    public void addAuth(String auth_name) {
-        authMapper.addAuth(new Auth(null, auth_name));
+    public void addAuth(Auth auth) {
+        authMapper.addAuth(auth);
     }
 
     @Override
-    public void addRole(String role_name) {
-        roleMapper.addRole(new Role(null, role_name));
+    public void addRole(Role role) {
+        roleMapper.addRole(role);
     }
 
     @Override
@@ -69,10 +80,6 @@ public class RoleAuthServiceImpl implements RoleAuthService {
         roleAuthMapper.deleteRoleAuthByAuthId(auth_id);
     }
 
-    @Override
-    public List<Auth> getAllAuth() {
-        return authMapper.getAllAuth();
-    }
 
     @Override
     public void deleteRoleAuth(String role_id, String auth_id) {

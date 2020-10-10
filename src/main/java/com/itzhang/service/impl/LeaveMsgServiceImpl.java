@@ -1,7 +1,7 @@
 package com.itzhang.service.impl;
 
 import com.itzhang.mapper.LeaveMsgMapper;
-import com.itzhang.pojo.LeaveMsg;
+import com.itzhang.entity.LeaveMsg;
 import com.itzhang.service.LeaveMsgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +20,8 @@ public class LeaveMsgServiceImpl implements LeaveMsgService {
     }
 
     @Override
-    public void insertMsg(String content) {
-        leaveMsgMapper.insertMsg(new LeaveMsg(null, content, null));
+    public void insertMsg(LeaveMsg msg) {
+        leaveMsgMapper.insertMsg(msg);
     }
 
     @Override

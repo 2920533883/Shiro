@@ -1,4 +1,4 @@
-package com.itzhang.pojo;
+package com.itzhang.entity;
 
 import lombok.*;
 

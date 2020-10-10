@@ -9,10 +9,10 @@
     <delete id="deleteAuthByAuthId">
         delete from auth where id = #{auth_id}
     </delete>
-    <select id="getAllAuth" resultType="com.itzhang.pojo.Auth">
+    <select id="getAllAuth" resultType="com.itzhang.entity.Auth">
         select id, auth_name from auth
     </select>
-    <select id="getAuthByAuthId" resultType="com.itzhang.pojo.Auth">
+    <select id="getAuthByAuthId" resultType="com.itzhang.entity.Auth">
         select id, auth_name from auth where id = #{auth_id}
     </select>
 

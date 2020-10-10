@@ -1,7 +1,7 @@
 package com.itzhang.service.impl;
 
 import com.itzhang.mapper.UserMapper;
-import com.itzhang.pojo.User;
+import com.itzhang.entity.User;
 import com.itzhang.service.UserService;
 import com.itzhang.utils.SaltUtil;
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -38,16 +38,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePasswordById(String id, String password) {
+    public void updatePasswordById(User user) {
+        String password = user.getPassword();
         String salt = SaltUtil.getSalt();
         Md5Hash md5Hash = new Md5Hash(password, salt, 88);
         password = md5Hash.toHex();
-        userMapper.updatePasswordById(id, password, salt);
+        user.setPassword(password);
+        user.setSalt(salt);
+        userMapper.updatePasswordById(user);
     }
 
     @Override
-    public void updateRoleById(String id, String role_id) {
-        userMapper.updateRoleById(id, role_id);
+    public void updateRoleById(User user) {
+        userMapper.updateRoleById(user);
     }
 
     @Override

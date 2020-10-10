@@ -1,14 +1,13 @@
-package com.itzhang.pojo;
+package com.itzhang.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class RoleAuth {
+@AllArgsConstructor
+public class Auth {
     String id;
-    String role_id;
-    String auth_id;
+    String auth_name;
 }

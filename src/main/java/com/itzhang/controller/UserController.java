@@ -1,9 +1,8 @@
 package com.itzhang.controller;
 
-import com.itzhang.pojo.Auth;
-import com.itzhang.pojo.R;
-import com.itzhang.pojo.Role;
-import com.itzhang.pojo.User;
+import com.itzhang.entity.R;
+import com.itzhang.entity.Role;
+import com.itzhang.entity.User;
 import com.itzhang.service.RoleAuthService;
 import com.itzhang.service.UserService;
 import io.swagger.annotations.Api;
@@ -12,11 +11,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Api(tags = "管理员模块")
@@ -40,10 +35,8 @@ public class UserController {
         for (User user : users) {
             Map<String, Object> map = new HashMap<>();
             Role role = roleAuthService.getRole(user.getRole_id());
-            List<Auth> auth = roleAuthService.getAuth(user.getRole_id());
             map.put("user", user);
             map.put("role", role);
-            map.put("auth", auth);
             res.add(map);
         }
         return new R(200, "获取成功！", res);
@@ -70,11 +63,11 @@ public class UserController {
             @ApiImplicitParam(name = "id", value = "用户ID"),
             @ApiImplicitParam(name = "password", value = "新密码")
     })
-    @PutMapping("/password/{id}")
+    @PutMapping("/user/password/{id}")
     @RequiresPermissions("user:update")
     public R updatePassword(@PathVariable String id, @RequestParam String password) {
-        userService.updatePasswordById(id, password);
-        User user = userService.getUserById(id);
+        User user = new User(id, null, password, null, null);
+        userService.updatePasswordById(user);
         return new R(200, "修改成功！", user);
     }
 
@@ -83,11 +76,11 @@ public class UserController {
             @ApiImplicitParam(name = "id", value = "用户ID"),
             @ApiImplicitParam(name = "role_id", value = "角色ID")
     })
-    @PutMapping("/role/{id}")
+    @PutMapping("/user/role/{id}")
     @RequiresPermissions("user:update")
     public R updateRole(@PathVariable String id, @RequestParam String role_id) {
-        userService.updateRoleById(id, role_id);
-        User user = userService.getUserById(id);
+        User user = new User(id, null, null, null, role_id);
+        userService.updateRoleById(user);
         return new R(200, "修改成功！", user);
     }
 
@@ -95,7 +88,7 @@ public class UserController {
     @ApiImplicitParam(name = "id", value = "用户ID")
     @DeleteMapping("/user/{id}")
     @RequiresPermissions("user:delete")
-    public R deleteUser(@PathVariable String id, HttpServletRequest request) {
+    public R deleteUser(@PathVariable String id) {
         userService.deleteUserById(id);
         return new R(200, "删除成功！", null);
     }

@@ -1,7 +1,7 @@
 package com.itzhang.controller;
 
-import com.itzhang.pojo.LeaveMsg;
-import com.itzhang.pojo.R;
+import com.itzhang.entity.LeaveMsg;
+import com.itzhang.entity.R;
 import com.itzhang.service.LeaveMsgService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -34,8 +34,9 @@ public class LeaveMsgController {
     @ApiImplicitParam(name = "content", value = "内容", paramType = "string")
     @PostMapping("/msg")
     public R addMsg(@RequestParam String content) {
-        leaveMsgService.insertMsg(content);
-        return new R(200, "添加成功！", content);
+        LeaveMsg msg = new LeaveMsg(null, content, null);
+        leaveMsgService.insertMsg(msg);
+        return new R(200, "添加成功！", msg);
     }
 
     @ApiOperation(value = "删除留言", notes = "需要权限 msg:delete")

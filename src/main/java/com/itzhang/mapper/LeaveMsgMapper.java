@@ -1,6 +1,6 @@
 package com.itzhang.mapper;
 
-import com.itzhang.pojo.LeaveMsg;
+import com.itzhang.entity.LeaveMsg;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

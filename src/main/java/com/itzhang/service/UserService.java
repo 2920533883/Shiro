@@ -1,9 +1,8 @@
 package com.itzhang.service;
 
-import com.itzhang.pojo.User;
+import com.itzhang.entity.User;
 
 import java.util.List;
-import java.util.Set;
 
 public interface UserService {
     void insertUser(User user);
@@ -16,7 +15,7 @@ public interface UserService {
 
     void deleteUserById(String id);
 
-    void updatePasswordById(String id, String password);
+    void updatePasswordById(User user);
 
-    void updateRoleById(String id, String role_id);
+    void updateRoleById(User user);
 }

@@ -1,11 +1,9 @@
 package com.itzhang.mapper;
 
-import com.itzhang.pojo.Auth;
-import com.itzhang.pojo.RoleAuth;
+import com.itzhang.entity.Auth;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-import java.util.Set;
 
 @Mapper
 public interface AuthMapper {

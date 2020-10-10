@@ -10,19 +10,19 @@
         update user set password = #{password}, salt = #{salt} where id = #{id}
     </update>
     <update id="updateRoleById">
-        update user set role_id = #{role_id}where id = #{id}
+        update user set role_id = #{role_id} where id = #{id}
     </update>
     <delete id="deleteUserById">
         delete from user where id = #{id}
     </delete>
 
-    <select id="getUsers" resultType="com.itzhang.pojo.User">
+    <select id="getUsers" resultType="com.itzhang.entity.User">
         select id, username, password, salt, role_id from user limit #{start}, #{offset}
     </select>
-    <select id="getUserByUsername" resultType="com.itzhang.pojo.User" parameterType="String">
+    <select id="getUserByUsername" resultType="com.itzhang.entity.User" parameterType="String">
         select id, username,password, salt, role_id from user where username=#{username}
     </select>
-    <select id="getUserById" resultType="com.itzhang.pojo.User">
+    <select id="getUserById" resultType="com.itzhang.entity.User">
         select id, username, password, salt, role_id from user where id = #{id}
     </select>
 

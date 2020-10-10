@@ -1,8 +1,8 @@
 package com.itzhang.realm;
 
-import com.itzhang.pojo.Auth;
-import com.itzhang.pojo.Role;
-import com.itzhang.pojo.User;
+import com.itzhang.entity.Auth;
+import com.itzhang.entity.Role;
+import com.itzhang.entity.User;
 import com.itzhang.service.RoleAuthService;
 import com.itzhang.service.UserService;
 import org.apache.shiro.authc.AuthenticationException;

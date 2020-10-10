@@ -1,6 +1,6 @@
 package com.itzhang.mapper;
 
-import com.itzhang.pojo.User;
+import com.itzhang.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,7 +13,7 @@ public interface UserMapper {
     User getUserById(String id);
     void insertUser(User user);
     void deleteUserById(String id);
-    void updatePasswordById(@Param("id")String id, @Param("password")String password, @Param("salt") String salt);
-    void updateRoleById(@Param("id")String id, @Param("role_id")String role_id);
+    void updatePasswordById(User user);
+    void updateRoleById(User user);
 
 }

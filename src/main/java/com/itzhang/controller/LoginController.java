@@ -1,6 +1,6 @@
 package com.itzhang.controller;
 
-import com.itzhang.pojo.R;
+import com.itzhang.entity.R;
 import com.itzhang.service.LoginService;
 import com.itzhang.service.UserService;
 import io.swagger.annotations.Api;

@@ -1,7 +1,9 @@
 package com.itzhang.controller;
 
-import com.itzhang.pojo.Auth;
-import com.itzhang.pojo.R;
+import com.itzhang.entity.Auth;
+import com.itzhang.entity.R;
+import com.itzhang.entity.Role;
+import com.itzhang.entity.RoleAuth;
 import com.itzhang.service.RoleAuthService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -20,19 +22,22 @@ public class RoleAuthController {
     @Autowired
     RoleAuthService roleAuthService;
 
-    @ApiOperation(value = "增加某角色的权限", notes = "需要权限 role:insert")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "role_id", value = "角色ID", paramType = "String"),
-            @ApiImplicitParam(name = "auth_id", value = "权限ID", paramType = "String")
-    })
-    @RequiresPermissions("role:insert")
-    @PostMapping("/role-auth/{role_id}")
-    public R addRoleAuth(@PathVariable("role_id") String role_id, @RequestParam String auth_id) {
-        roleAuthService.addRoleAuth(role_id, auth_id);
-        HashMap<Object, Object> map = new HashMap<>();
-        map.put("role_id", role_id);
-        map.put("auth_id", auth_id);
-        return new R(200, "添加成功！", map);
+
+    @ApiOperation(value = "获取所有权限", notes = "需要权限 auth:get")
+    @RequiresPermissions("auth:get")
+    @GetMapping("/auths")
+    public R getAllAuth() {
+        List<Auth> auths = roleAuthService.getAllAuth();
+        return new R(200, "获取成功！", auths);
+    }
+
+
+    @ApiOperation(value = "获取所有角色", notes = "需要权限 role:get")
+    @RequiresPermissions("role:get")
+    @GetMapping("/roles")
+    public R getAllRole() {
+        List<Role> roles = roleAuthService.getAllRole();
+        return new R(200, "获取成功！", roles);
     }
 
     @ApiOperation(value = "获取某角色的权限", notes = "需要权限 role:get")
@@ -43,25 +48,39 @@ public class RoleAuthController {
         List<Auth> auths = roleAuthService.getAuth(role_id);
         return new R(200, "获取成功！", auths);
     }
-    @ApiOperation(value = "删除某角色的某权限", notes = "需要权限 role:delete")
+
+    @ApiOperation(value = "增加某角色的权限", notes = "需要权限 role:insert")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "role_id", value = "角色ID", paramType = "String"),
             @ApiImplicitParam(name = "auth_id", value = "权限ID", paramType = "String")
     })
-    @RequiresPermissions("role:delete")
-    @DeleteMapping("/role-auth/{role_id}")
-    public R deleteRoleAuth(@PathVariable String role_id, @RequestParam String auth_id) {
-        roleAuthService.deleteRoleAuth(role_id, auth_id);
-        return new R(200, "删除成功！", null);
+    @RequiresPermissions("role:insert")
+    @PostMapping("/role-auth/{role_id}")
+    public R addRoleAuth(@PathVariable("role_id") String role_id, @RequestParam String auth_id) {
+        RoleAuth roleAuth = new RoleAuth(null, role_id, auth_id);
+        roleAuthService.addRoleAuth(roleAuth);
+        return new R(200, "添加成功！", roleAuth);
     }
+
 
     @ApiOperation(value = "增加角色", notes = "需要权限 role:insert")
     @ApiImplicitParam(name = "role_name", value = "角色名", paramType = "String")
     @RequiresPermissions("role:insert")
     @PostMapping("/role")
     public R addRole(@RequestParam String role_name) {
-        roleAuthService.addRole(role_name);
-        return new R(200, "添加成功！", role_name);
+        Role role = new Role(null, role_name);
+        roleAuthService.addRole(role);
+        return new R(200, "添加成功！", role);
+    }
+
+    @ApiOperation(value = "增加权限", notes = "需要权限 auth:insert")
+    @ApiImplicitParam(name = "auth_name", value = "权限名", paramType = "String")
+    @RequiresPermissions("auth:insert")
+    @PostMapping("/auth")
+    public R addAuth(@RequestParam String auth_name) {
+        Auth auth = new Auth(null, auth_name);
+        roleAuthService.addAuth(auth);
+        return new R(200, "添加成功！", auth);
     }
 
     @ApiOperation(value = "删除角色", notes = "需要权限 role:delete")
@@ -73,15 +92,6 @@ public class RoleAuthController {
         return new R(200, "删除成功！", null);
     }
 
-    @ApiOperation(value = "增加权限", notes = "需要权限 auth:insert")
-    @ApiImplicitParam(name = "auth_name", value = "权限名", paramType = "String")
-    @RequiresPermissions("auth:insert")
-    @PostMapping("/auth")
-    public R addAuth(@RequestParam String auth_name) {
-        roleAuthService.addAuth(auth_name);
-        return new R(200, "添加成功！", auth_name);
-    }
-
     @ApiOperation(value = "删除权限", notes = "需要权限 auth:delete")
     @ApiImplicitParam(name = "auth_id", value = "权限ID", paramType = "String")
     @RequiresPermissions("auth:delete")
@@ -91,11 +101,15 @@ public class RoleAuthController {
         return new R(200, "删除成功！", null);
     }
 
-    @ApiOperation(value = "获取所有权限", notes = "需要权限 auth:get")
-    @RequiresPermissions("auth:get")
-    @GetMapping("/auths")
-    public R getAllAuth() {
-        List<Auth> auths = roleAuthService.getAllAuth();
-        return new R(200, "获取成功！", auths);
+    @ApiOperation(value = "删除某角色的某权限", notes = "需要权限 role:delete")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "role_id", value = "角色ID", paramType = "String"),
+            @ApiImplicitParam(name = "auth_id", value = "权限ID", paramType = "String")
+    })
+    @RequiresPermissions("role:delete")
+    @DeleteMapping("/role-auth/{role_id}")
+    public R deleteRoleAuth(@PathVariable String role_id, @RequestParam String auth_id) {
+        roleAuthService.deleteRoleAuth(role_id, auth_id);
+        return new R(200, "删除成功！", null);
     }
 }

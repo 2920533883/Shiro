@@ -1,18 +1,24 @@
 package com.itzhang.advice;
 
-import com.itzhang.pojo.R;
+import com.itzhang.entity.R;
 import org.apache.shiro.authc.CredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ServletRequestBindingException.class)
+    public R myServletRequestBindingException(){
+        System.out.println("请求参数不可为空！");
+        return new R(400, "请求参数不可为空！", null);
+    }
 
     @ExceptionHandler(DataAccessException.class)
     public R myDataIntegrityViolationException(Exception e){
@@ -38,6 +44,8 @@ public class GlobalExceptionHandler {
         System.out.println("权限不足！");
         return new R(403, "没有对应权限！", null);
     }
+
+
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public R myHttpRequestMethodNotSupportedException(Exception e){

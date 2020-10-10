@@ -1,12 +1,10 @@
 package com.itzhang.mapper;
 
-import com.itzhang.pojo.RoleAuth;
+import com.itzhang.entity.RoleAuth;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
-import java.util.Set;
 
 @Mapper
 public interface RoleAuthMapper {

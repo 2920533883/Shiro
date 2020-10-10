@@ -9,7 +9,10 @@
     <delete id="deleteRoleByRoleId">
         delete from role where id = #{role_id}
     </delete>
-    <select id="getRoleByRoleId" resultType="com.itzhang.pojo.Role">
+    <select id="getRoleByRoleId" resultType="com.itzhang.entity.Role">
         select id, role_name from role where id = #{role_id}
+    </select>
+    <select id="getAllRole" resultType="com.itzhang.entity.Role">
+        select id, role_name from role
     </select>
 </mapper>

@@ -9,7 +9,7 @@
     <delete id="deleteMsgByMsgId">
         delete from leavemsg where id = #{msgId}
     </delete>
-    <select id="getMsgs" resultType="com.itzhang.pojo.LeaveMsg">
+    <select id="getMsgs" resultType="com.itzhang.entity.LeaveMsg">
         select id, content, time from leavemsg limit #{start}, #{offset}
     </select>
 </mapper>
