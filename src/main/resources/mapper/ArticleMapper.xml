@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itzhang.mapper.ArticleMapper">
+    <insert id="insertArticle" useGeneratedKeys="true" keyProperty="id">
+        insert into article value (#{id}, #{topic}, #{code})
+    </insert>
+    <update id="updateArticleById">
+        update article set topic = #{topic},   code = #{code} where id = #{id}
+    </update>
+    <delete id="deleteArticleById">
+        delete from article where id = #{id}
+    </delete>
+    <select id="getArticles" resultType="com.itzhang.entity.Article">
+        select id, topic, code from article
+        <if test="key != null">
+            where topic like "%${key}%"
+        </if>
+        limit #{start}, #{offset}
+    </select>
+</mapper>
