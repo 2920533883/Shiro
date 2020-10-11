@@ -1,5 +1,6 @@
 package com.itzhang.service.impl;
 
+import com.itzhang.entity.MyQuery;
 import com.itzhang.mapper.LeaveMsgMapper;
 import com.itzhang.entity.LeaveMsg;
 import com.itzhang.service.LeaveMsgService;
@@ -14,9 +15,8 @@ public class LeaveMsgServiceImpl implements LeaveMsgService {
     LeaveMsgMapper leaveMsgMapper;
 
     @Override
-    public List<LeaveMsg> getMsgs(Integer pageNum, Integer pageSize) {
-        Integer start = (pageNum - 1) * pageSize;
-        return leaveMsgMapper.getMsgs(start, pageSize);
+    public List<LeaveMsg> getMsgs(MyQuery query) {
+        return leaveMsgMapper.getMsgs(query);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.itzhang.controller;
 
 import com.itzhang.entity.LeaveMsg;
+import com.itzhang.entity.MyQuery;
 import com.itzhang.entity.R;
 import com.itzhang.service.LeaveMsgService;
 import io.swagger.annotations.Api;
@@ -19,14 +20,15 @@ public class LeaveMsgController {
     @Autowired
     LeaveMsgService leaveMsgService;
 
-    @ApiOperation(value = "获取所有留言")
+    @ApiOperation(value = "获取所有留言", notes = "若要获取所有留言，则不需要传content")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "content", value = "内容关键词", paramType = "string"),
             @ApiImplicitParam(name = "pageNum", value = "当前页数", paramType = "int"),
             @ApiImplicitParam(name = "pageSize", value = "每页信息数", paramType = "int")
     })
     @GetMapping("/msgs")
-    public R getMsgs(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
-        List<LeaveMsg> msgs = leaveMsgService.getMsgs(pageNum, pageSize);
+    public R getMsgs(@RequestParam(required = false) String content, @RequestParam Integer pageNum, @RequestParam Integer pageSize) {
+        List<LeaveMsg> msgs = leaveMsgService.getMsgs(new MyQuery(content, (pageNum-1)*pageSize, pageSize));
         return new R(200, "获取成功！", msgs);
     }
 
